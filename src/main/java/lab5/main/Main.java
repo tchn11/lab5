@@ -25,7 +25,7 @@ public class Main {
         CollectionManager coll = new CollectionManager(fl);
         Scanner scanner = new Scanner(System.in);
         ConsoleManager cons = new ConsoleManager(scanner);
-        CommandManager com  = new CommandManager(coll, scanner, new Commandable[]{
+        CommandManager com  = new CommandManager(cons, coll, scanner, new Commandable[]{
                 new ClearCommand(coll), new AddCommand(coll, cons), new ShowCommand(coll),
                 new InfoCommand(coll), new UpdateIdCommand(coll, cons), new RemoveByIdCommand(coll),
                 new ExitCommand(), new RemoveByIndexCommand(coll), new AddIfMaxCommand(coll, cons),

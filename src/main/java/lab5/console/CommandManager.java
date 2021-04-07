@@ -3,6 +3,9 @@ package lab5.console;
 import lab5.collection.CollectionManager;
 import lab5.file.ScriptManager;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -21,11 +24,13 @@ public class CommandManager {
     private ConsoleManager consoleManager;
     /**
      * Constructor, set start values
+     * @param consol Console Manager
      * @param col Collection manager
      * @param sc Scanner
      * @param comm Array of all commands (implements from Commandable)
      */
     public CommandManager(ConsoleManager consol, CollectionManager col, Scanner sc, Commandable[] comm){
+        consoleManager = consol;
         scanner = sc;
         commands = comm;
         collectionManager = col;
@@ -132,8 +137,20 @@ public class CommandManager {
                 boolean isFindCommand = false;
                 for (Commandable comman : commands) {
                     if (cmd[0].trim().equals(comman.getName())) {
-                        isRuning =  comman.execute(cmd[1]);
-                        isFindCommand = true;
+                        if (comman.getName().trim().equals("add")){
+                            consoleManager.ChangeScanner(scriptManager.getScriptReader());
+                            try{
+                                isRuning =  comman.execute(cmd[1]);
+                                isFindCommand = true;
+                            }catch (NoSuchElementException e){
+                                PrintErr("Ошибка чтения элемента из файла");
+                            }
+                            consoleManager.ChangeScanner(new Scanner(System.in));
+                        }
+                        else {
+                            isRuning = comman.execute(cmd[1]);
+                            isFindCommand = true;
+                        }
                         break;
                     }
                 }
